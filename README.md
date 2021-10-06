@@ -1,6 +1,6 @@
 # Lab2
 
-##Task:
+## Task:
 1. DB "Ships". Display information about all classes of ships for
 countries 'Japan'. Sort the output in descending order by column
 type.

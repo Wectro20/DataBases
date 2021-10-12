@@ -38,7 +38,7 @@ according to the preliminary analysis of the data structure.
    mysql -u root -p
    ```
   - then enter your password to mysql
-  - write 
+  - then write 
    ```
    source (here must be your path to lab3.sql)
    ```

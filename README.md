@@ -19,8 +19,9 @@ data insertion procedure.</br></br>
 according to the preliminary analysis of the data structure.
 
 ## hOW tO rUn ?
-  - First of all you must have a prescribed path of git and mysql in your environment variables
-  - NEXT STEP ↓</br>
+   ### Important !!!
+   First of all you must have a prescribed path of git and mysql in your environment variables
+  - FIRST STEP ↓</br>
   - clone my repository:
   ```
   git clone https://github.com/Wectro20/DataBases.git

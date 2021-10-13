@@ -50,6 +50,7 @@ CREATE TABLE IF NOT EXISTS forecast (
 	wind_speed_in_mph FLOAT NOT NULL,
 	wind_direction CHAR NOT NULL,
 	date DATE NOT NULL,
+	week_date DATE NOT NULL,
 	PRIMARY KEY (id),
 	INDEX weather_status_id_idx (weather_status_id ASC),
   	INDEX weather_warning_id_idx (weather_warning_id ASC),

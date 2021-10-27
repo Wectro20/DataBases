@@ -2,8 +2,10 @@ package com.andrii.view;
 
 import com.andrii.controller.*;
 import com.andrii.controller.intefaces.GeneralController;
+import com.andrii.model.models.GeneralModel;
+import com.andrii.model.models.*;
 
-
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -12,12 +14,14 @@ import java.util.Scanner;
 
 public class View implements Printable {
     private final Map<String, GeneralController> tables;
+    private final Map<String, GeneralModel> models;
     private String consoleInput;
     private Scanner input = new Scanner(System.in, StandardCharsets.UTF_8);
     boolean isQuit;
 
     public View() {
         isQuit = false;
+        models = new HashMap<>();
         tables = new HashMap<>();
         tables.put("City", new CityControllerImpl());
         tables.put("Country", new CountryControllerImpl());
@@ -26,6 +30,13 @@ public class View implements Printable {
         tables.put("WeatherStatus", new WeatherStatusControllerImpl());
         tables.put("WeatherWarning", new WeatherWarningControllerImpl());
         tables.put("WeatherWeeklyForecast", new WeatherWeeklyForecastControllerImpl());
+        models.put("City", new City());
+        models.put("Country", new Country());
+        models.put("Days", new Days());
+        models.put("Forecast", new Forecast());
+        models.put("WeatherStatus", new WeatherStatus());
+        models.put("WeatherWarning", new WeatherWarning());
+        models.put("WeatherWeeklyForecast", new WeatherWeeklyForecast());
     }
 
     @Override
@@ -47,7 +58,7 @@ public class View implements Printable {
                     default -> System.out.println("invalid input");
                 }
             } catch (Exception e) {
-                System.out.println(e);
+                System.out.println("invalid input");
             }
         }
     }
@@ -58,27 +69,13 @@ public class View implements Printable {
             System.out.println(getMethodModel(table));
             consoleInput = input.nextLine().toUpperCase();
             switch (consoleInput) {
-                case "FA":
-                    printFindAll(tables.get(table));
-                    break;
-                case "FBI":
-
-                    break;
-                case "C":
-
-                    break;
-                case "U":
-
-                    break;
-                case "F":
-
-                    break;
-                case "B":
-                    isBack = true;
-                    break;
-                default:
-                    System.out.println("invalid input");
-                    break;
+                case "FA" -> printFindAll(tables.get(table));
+                case "FBI" -> findById(tables.get(table));
+                case "C" -> create(tables.get(table), models.get(table));
+                case "U" -> update(tables.get(table), models.get(table));
+                case "D" -> delete(tables.get(table));
+                case "B" -> isBack = true;
+                default -> System.out.println("invalid input");
             }
         }
     }
@@ -94,6 +91,32 @@ public class View implements Printable {
         str.append("    WWF - WeatherWeeklyForecast\n");
         str.append("    Q - quit\n");
         return str.toString();
+    }
+
+    private GeneralModel getModel(GeneralModel model, boolean isToUpdate) {
+        try {
+            model = model.getClass().getConstructor().newInstance();
+            Field[] fields = model.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                if (field.getName() == "id" && !isToUpdate) {
+                    continue;
+                }
+                System.out.println("Print value of " + field.getName() + " type " + field.getAnnotatedType() + ": ");
+                consoleInput = input.nextLine();
+                field.setAccessible(true);
+                switch (field.getAnnotatedType().toString()) {
+                    case "java.lang.Integer" -> field.set(model, Integer.parseInt(consoleInput));
+                    case "java.lang.String" -> field.set(model, consoleInput);
+                    case "java.lang.Float" -> field.set(model, Float.parseFloat(consoleInput));
+                    default -> {
+                    }
+                }
+            }
+            return model;
+        } catch (Exception e) {
+            System.out.println("bad input" + e);
+        }
+        return null;
     }
 
     private String getMethodModel(String table) {
@@ -120,15 +143,25 @@ public class View implements Printable {
         }
     }
 
-    private void create(GeneralController module) throws SQLException {
-
+    private void create(GeneralController module, GeneralModel model) throws SQLException {
+        module.create(getModel(model,false));
+        System.out.println("Success");
     }
 
-    private void update() throws SQLException {
-
+    private void update(GeneralController module, GeneralModel model) throws SQLException {
+        model = getModel(model,true);
+        if(model == null){
+            System.out.println("Bad input");
+        }else {
+            module.update(model);
+            System.out.println("Success");
+        }
     }
 
     private void delete(GeneralController module) throws SQLException {
-
+        System.out.println("Print id of model to delete:");
+        consoleInput = input.nextLine();
+        System.out.println("Success");
+        System.out.println(module.delete(Integer.parseInt(consoleInput)));
     }
 }

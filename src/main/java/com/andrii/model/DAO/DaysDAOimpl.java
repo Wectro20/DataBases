@@ -16,7 +16,7 @@ public class DaysDAOimpl implements DaysDAO {
 
     @Override
     public String FindOfElement() {
-        return "SELECT * FROM days WHERE city.id = ?";
+        return "SELECT * FROM days WHERE days.id = ?";
     }
 
     @Override

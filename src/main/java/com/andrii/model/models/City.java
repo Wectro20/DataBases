@@ -5,7 +5,7 @@ import lombok.*;
 
 @Table(name = "city")
 @Data
-public class City {
+public class City extends GeneralModel {
     @PrimaryKey
     @Column(name = "id")
     private Integer id;

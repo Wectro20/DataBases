@@ -1,13 +1,12 @@
 package com.andrii.model.models;
 
 import com.andrii.model.annotation.*;
-import java.sql.Date;
 import lombok.*;
 
 @Table(name = "forecast")
 @Data
 
-public class Forecast {
+public class Forecast extends GeneralModel {
     @PrimaryKey
     @Column(name = "id")
     private Integer id;
@@ -37,8 +36,8 @@ public class Forecast {
     private String windDirection;
 
     @Column(name = "date")
-    private Date date;
+    private String date;
 
     @Column(name = "week_date")
-    private Date weekDate;
+    private String weekDate;
 }

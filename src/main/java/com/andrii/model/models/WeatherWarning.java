@@ -6,7 +6,7 @@ import lombok.*;
 @Table(name = "weather_warning")
 @Data
 
-public class WeatherWarning {
+public class WeatherWarning extends GeneralModel {
     @PrimaryKey
     @Column(name = "id")
     private Integer id;

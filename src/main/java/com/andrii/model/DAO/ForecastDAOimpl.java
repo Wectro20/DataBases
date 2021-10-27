@@ -21,13 +21,13 @@ public class ForecastDAOimpl implements ForecastDAO {
 
     @Override
     public String Create() {
-        return "INSERT forecast(weather_status_id, weather_warning_id, day_id, temperature, feels_like_temperature  " +
+        return "INSERT forecast(weather_status_id, weather_warning_id, day_id, temperature, feels_like_temperature,  " +
                 "humidity_in_percentage, wind_speed_in_mph, wind_direction, date, week_date) VALUES (?,?,?,?,?,?,?,?,?,?)";
     }
 
     @Override
     public String Update() {
-        return "UPDATE forecast SET weather_status_id=?, weather_warning_id=?, day_id, temperature=?, feels_like_temperature=?" +
+        return "UPDATE forecast SET weather_status_id=?, weather_warning_id=?, day_id=?, temperature=?, feels_like_temperature=?," +
                 "humidity_in_percentage=?, wind_speed_in_mph=?, wind_direction=?, date=?, week_date=? WHERE id=?";
     }
 
@@ -51,8 +51,8 @@ public class ForecastDAOimpl implements ForecastDAO {
         preparedStatement.setFloat(6, forecast.getHumidityInPercentage());
         preparedStatement.setFloat(7, forecast.getWindSpeedInMph());
         preparedStatement.setString(8, forecast.getWindDirection());
-        preparedStatement.setDate(9, forecast.getDate());
-        preparedStatement.setDate(10, forecast.getWeekDate());
+        preparedStatement.setString(9, forecast.getDate());
+        preparedStatement.setString(10, forecast.getWeekDate());
         return preparedStatement;
     }
 

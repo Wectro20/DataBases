@@ -45,7 +45,7 @@ public class WeatherWeeklyForecastDAOimpl implements WeatherWeeklyForecastDAO {
         preparedStatement.setInt(1, weatherWeeklyForecast.getCountryWeaklyId());
         preparedStatement.setInt(2, weatherWeeklyForecast.getCityWeaklyId());
         preparedStatement.setInt(3, weatherWeeklyForecast.getForecastId());
-        preparedStatement.setDate(4, weatherWeeklyForecast.getWeekDate());
+        preparedStatement.setString(4, weatherWeeklyForecast.getWeekDate());
         preparedStatement.setString(5, weatherWeeklyForecast.getSourceSystem());
         return preparedStatement;
     }

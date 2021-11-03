@@ -90,6 +90,11 @@ public class WeatherWeeklyForecast extends GeneralModel{
 
     @Override
     public String toString() {
-        return String.format("|%3s| %-20s | %-20s| %-20s| %-20s| %-20s|",id, countryByCountryWeaklyId, cityByCityWeaklyId, forecastByForecastId, weekDate, sourceSystem);
+        return String.format("|%3s| %-20s %-20s %-5s %-5s | %-14s|",id, countryByCountryWeaklyId, cityByCityWeaklyId, forecastByForecastId, weekDate, sourceSystem);
+    }
+
+    @Override
+    public String printColumns() {
+        return String.format("|%3s| | %-24s | | %-25s| | %-233s| %-11s| %-10s |","id","country weakly id", "city weekly id", "forecast weekly id", "week date", "source system" );
     }
 }

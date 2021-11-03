@@ -14,9 +14,4 @@ public class CityControllerImpl implements CityController {
     public GeneralDAO<City, Integer> giveDAOobject() {
         return Objects.requireNonNullElseGet(cityDAO, () -> cityDAO = new CityDAOimpl());
     }
-
-    @Override
-    public String printColumns() {
-        return String.format("+----+---------------------+\n| %-2s | %-19s |\n+----+---------------------+","id","city name");
-    }
 }

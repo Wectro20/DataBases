@@ -14,9 +14,4 @@ public class DaysControllerImpl implements DaysController {
     public GeneralDAO<Days, Integer> giveDAOobject() {
         return Objects.requireNonNullElseGet(daysDAO, () -> daysDAO = new DaysDAOimpl());
     }
-
-    @Override
-    public String printColumns() {
-        return String.format("+----+---------------------+\n| %-2s | %-19s |\n+----+---------------------+","id","days");
-    }
 }

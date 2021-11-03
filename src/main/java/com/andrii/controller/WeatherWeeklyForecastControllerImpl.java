@@ -14,9 +14,4 @@ public class WeatherWeeklyForecastControllerImpl implements WeatherWeeklyForecas
     public GeneralDAO<WeatherWeeklyForecast, Integer> giveDAOobject() {
         return Objects.requireNonNullElseGet(weatherWeeklyForecastDAO, () -> weatherWeeklyForecastDAO = new WeatherWeeklyForecastDAOimpl());
     }
-
-    @Override
-    public String printColumns() {
-        return String.format("|%3s| %-20s | %-20s| %-20s| %-20s| %-20s|","id","country weakly id", "city weekly id", "forecast weekly id", "week date", "source system" );
-    }
 }

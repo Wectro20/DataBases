@@ -144,6 +144,14 @@ public class Forecast extends GeneralModel{
 
     @Override
     public String toString() {
-        return String.format("| %-3s| %-15s | %-22s| %-22s| %-17s| %-15s| %-15s| %-15s %-15s %-15s %-15s",id, temperature, feelsLikeTemperature, humidityInPercentage, windSpeedInMph, windDirection, date, weekDate, daysByDayId, weatherStatusId, weatherWarningId);
+        return String.format("| %-3s| %-15s | %-22s| %-22s| %-17s| %-15s| %-15s| %-14s %-10s %-10s %-15s",id, temperature, feelsLikeTemperature, humidityInPercentage, windSpeedInMph, windDirection, date, weekDate, daysByDayId, weatherStatusId, weatherWarningId);
+    }
+
+    @Override
+    public String printColumns() {
+        return String.format("+----+-----------------+-----------------------+-----------------------+------------------+----------------+----------------+----------------+--------------------------+-+--------------------------+-+-----------------------------------+\n"+
+                        "| %-2s | %-15s | %-15s| %-15s| %-15s| %-15s| %-15s| %-15s| %-24s | | %-24s | | %-33s | "+
+                        "\n+----+-----------------+-----------------------+-----------------------+------------------+----------------+----------------+----------------+--------------------------+-+--------------------------+-+-----------------------------------+"
+                ,"id","temperature","feels_like_temperature","humidity_in_percentage","wind_speed_in_mph","wind_direction","date","week_date","day id", "weather_status_id", "weatherWarningId");
     }
 }

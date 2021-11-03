@@ -27,6 +27,4 @@ public interface GeneralController<T, ID> {
     default int delete(ID id) throws SQLException {
         return giveDAOobject().delete(id);
     }
-
-    String printColumns();
 }

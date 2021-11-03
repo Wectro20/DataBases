@@ -14,9 +14,4 @@ public class WeatherStatusControllerImpl implements WeatherStatusController {
     public GeneralDAO<WeatherStatus, Integer> giveDAOobject() {
         return Objects.requireNonNullElseGet(weatherStatusDAO, () -> weatherStatusDAO = new WeatherStatusDAOimpl());
     }
-
-    @Override
-    public String printColumns() {
-        return String.format("+----+---------------------+\n| %-2s | %-19s |\n+----+---------------------+","id","weather status");
-    }
 }

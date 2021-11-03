@@ -6,6 +6,7 @@ import com.andrii.model.models.*;
 
 import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -69,7 +70,7 @@ public class View implements Printable {
             consoleInput = input.nextLine().toUpperCase();
             switch (consoleInput) {
                 case "FA" ->{
-                    System.out.println(tables.get(table).printColumns());
+                    System.out.println(models.get(table).printColumns());
                     printFindAll(tables.get(table));
                 }
                 case "FBI" -> findById(tables.get(table));
@@ -110,6 +111,14 @@ public class View implements Printable {
                     case "java.lang.Integer" -> field.set(model, Integer.parseInt(consoleInput));
                     case "java.lang.String" -> field.set(model, consoleInput);
                     case "java.lang.Float" -> field.set(model, Float.parseFloat(consoleInput));
+                    case "java.lang.Double" -> field.set(model, Double.parseDouble(consoleInput));
+                    case "java.sql.Date" -> field.set(model, Date.valueOf(consoleInput));
+                    case "com.andrii.model.models.Country" -> field.set(model, tables.get("Country").findById(Integer.parseInt(consoleInput)));
+                    case "com.andrii.model.models.City" -> field.set(model, tables.get("City").findById(Integer.parseInt(consoleInput)));
+                    case "com.andrii.model.models.Forecast" -> field.set(model, tables.get("Forecast").findById(Integer.parseInt(consoleInput)));
+                    case "com.andrii.model.models.Days" -> field.set(model, tables.get("Days").findById(Integer.parseInt(consoleInput)));
+                    case "com.andrii.model.models.WeatherWarning" -> field.set(model, tables.get("WeatherWarning").findById((Integer.parseInt(consoleInput))));
+                    case "com.andrii.model.models.WeatherStatus" -> field.set(model, tables.get("WeatherStatus").findById((Integer.parseInt(consoleInput))));
                     default -> {
                     }
                 }

@@ -14,9 +14,4 @@ public class CountryControllerImpl implements CountryController {
     public GeneralDAO<Country, Integer> giveDAOobject() {
         return Objects.requireNonNullElseGet(countryDAO, () -> countryDAO = new CountryDAOimpl());
     }
-
-    @Override
-    public String printColumns() {
-        return String.format("+----+---------------------+\n| %-2s | %-19s |\n+----+---------------------+","id","country name");
-    }
 }

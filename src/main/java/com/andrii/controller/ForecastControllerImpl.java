@@ -14,12 +14,4 @@ public class ForecastControllerImpl implements ForecastController {
     public GeneralDAO<Forecast, Integer> giveDAOobject() {
         return Objects.requireNonNullElseGet(forecastDAO, () -> forecastDAO = new ForecastDAOimpl());
     }
-
-    @Override
-    public String printColumns() {
-        return String.format("+----+-----------------+-----------------------+-----------------------+------------------+----------------+----------------+----------------+\n"+
-                "| %-2s | %-15s | %-15s| %-15s| %-15s| %-15s| %-15s| %-15s| %-15s %-15s %-15s "+
-                "\n+----+-----------------+-----------------------+-----------------------+------------------+----------------+----------------+----------------+"
-                ,"id","temperature","feels_like_temperature","humidity_in_percentage","wind_speed_in_mph","wind_direction","date","week_date","day id", "weather_status_id", "weatherWarningId");
-    }
 }

@@ -47,4 +47,9 @@ public class WeatherStatus extends GeneralModel{
     public String toString() {
         return String.format("| %-3s| %-20s|",id, weatherSt);
     }
+
+    @Override
+    public String printColumns() {
+        return String.format("+----+---------------------+\n| %-2s | %-19s |\n+----+---------------------+","id","weather status");
+    }
 }

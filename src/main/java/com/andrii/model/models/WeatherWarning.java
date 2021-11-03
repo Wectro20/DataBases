@@ -47,4 +47,9 @@ public class WeatherWarning extends GeneralModel{
     public String toString() {
         return String.format("| %-3s| %-29s|",id, name);
     }
+
+    @Override
+    public String printColumns() {
+        return String.format("+----+------------------------------+\n| %-2s | %-28s |\n+----+------------------------------+","id","weather warning");
+    }
 }

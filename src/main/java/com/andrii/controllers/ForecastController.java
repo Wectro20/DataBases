@@ -1,10 +1,7 @@
 package com.andrii.controllers;
 
 import com.andrii.exceptions.ConferenceNotFoundException;
-import com.andrii.models.City;
-import com.andrii.models.Days;
 import com.andrii.models.Forecast;
-import com.andrii.service.CityService;
 import com.andrii.service.ForecastService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +23,7 @@ public class ForecastController {
     private ForecastService forecastService;
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Forecast> getCity(@PathVariable(name = "id") Integer id) {
+    public ResponseEntity<Forecast> getForecast(@PathVariable(name = "id") Integer id) {
         if (forecastService.getForecastId(id) == null) {
             LOGGER.info("Can't update forecast with non-existing id" + id);
             throw new ConferenceNotFoundException("Forecast with id: " + id + " not found");
@@ -36,21 +33,21 @@ public class ForecastController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Forecast>> getConference() {
+    public ResponseEntity<List<Forecast>> getForecast() {
         LOGGER.info("Successfully gave an objects");
         return new ResponseEntity<List<Forecast>>(forecastService.getForecast(), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Forecast> createConference(@Valid @RequestBody Forecast forecast) {
-        LOGGER.info("Success added city");
+    public ResponseEntity<Forecast> createForecast(@Valid @RequestBody Forecast forecast) {
+        LOGGER.info("Success added forecast");
         return new ResponseEntity<Forecast>(forecastService.addForecast(forecast), HttpStatus.OK);
     }
 
     @PutMapping(path="/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Forecast> updateConference(@PathVariable("id")final int id, @Valid @RequestBody final Forecast forecast) {
+    public ResponseEntity<Forecast> updateForecast(@PathVariable("id")final int id, @Valid @RequestBody final Forecast forecast) {
         if (forecastService.getForecastId(id) == null) {
-            LOGGER.info("Can't update Item without id - null value was passed instead of it");
+            LOGGER.info("Can't update Forecast without id - null value was passed instead of it");
             throw new ConferenceNotFoundException("City with id: " + id + " not found");
         }
         LOGGER.info("Updated an item with id: " + id);
@@ -59,12 +56,12 @@ public class ForecastController {
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<Forecast> deleteConference(@PathVariable("id") Integer id) {
+    public ResponseEntity<Forecast> deleteForecast(@PathVariable("id") Integer id) {
         if (forecastService.getForecastId(id) == null) {
-            LOGGER.info("Can't delete City ");
-            throw new ConferenceNotFoundException("City with id: " + id + " not found");
+            LOGGER.info("Can't delete Forecast ");
+            throw new ConferenceNotFoundException("Forecast with id: " + id + " not found");
         }
-        LOGGER.info("Successfully deleted city with id: " +id);
+        LOGGER.info("Successfully deleted forecast with id: " +id);
         forecastService.deleteForecastById(id);
         return ResponseEntity.noContent().build();
     }

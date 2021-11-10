@@ -54,17 +54,17 @@ public class Forecast{
 
     @ManyToOne
     @NotNull(message = "Missing day id")
-    @JoinColumn(name = "day_id", referencedColumnName = "id")
+    @JoinColumn(name = "day_id", referencedColumnName = "id", nullable = false)
     private Days dayId;
 
     @ManyToOne
     @NotNull(message = "Missing weather warning id")
-    @JoinColumn(name = "weather_warning_id", referencedColumnName = "id")
+    @JoinColumn(name = "weather_warning_id", referencedColumnName = "id", nullable = false)
     private WeatherWarning weatherWarningId;
 
     @ManyToOne
     @NotNull(message = "Missing weather status id")
-    @JoinColumn(name = "weather_status_id", referencedColumnName = "id")
+    @JoinColumn(name = "weather_status_id", referencedColumnName = "id", nullable = false)
     private WeatherStatus weatherStatusId;
 
     public Forecast(Double temperature, Double feelsLikeTemperature, Double humidityInPercentage, Double windSpeedInMph,

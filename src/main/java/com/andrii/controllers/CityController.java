@@ -1,6 +1,7 @@
 package com.andrii.controllers;
 
 
+import com.andrii.dto.CityDto;
 import com.andrii.models.City;
 import com.andrii.service.CityService;
 import org.slf4j.Logger;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import com.andrii.exceptions.ConferenceNotFoundException;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,36 +27,45 @@ public class CityController {
     private CityService cityService;
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<City> getCity(@PathVariable(name = "id") Integer id) {
+    public ResponseEntity<CityDto> getCity(@PathVariable(name = "id") Integer id) {
         if (cityService.getCityId(id) == null) {
             LOGGER.info("Can't update city with non-existing id" + id);
             throw new ConferenceNotFoundException("City with id: " + id + " not found");
         }
         LOGGER.info("Successfully gave an object:" + id);
-        return new ResponseEntity<City>(cityService.getCityId(id), HttpStatus.OK);
+        City city = cityService.getCityId(id);
+        return new ResponseEntity<CityDto>(new CityDto(city), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<City>> getCity() {
+    public ResponseEntity<List<CityDto>> getCity() {
         LOGGER.info("Successfully gave an objects");
-        return new ResponseEntity<List<City>>(cityService.getCity(), HttpStatus.OK);
+        List<City> cities = cityService.getCity();
+        List<CityDto> citiesDto = new ArrayList<>();
+        for (City city:cities) {
+            CityDto cityDto = new CityDto(city);
+            citiesDto.add(cityDto);
+        }
+        return new ResponseEntity<List<CityDto>>(citiesDto, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<City> createCity(@Valid @RequestBody City city) {
+    public ResponseEntity<CityDto> createCity(@Valid @RequestBody City city) {
         LOGGER.info("Success added city");
-        return new ResponseEntity<City>(cityService.addCity(city), HttpStatus.OK);
+        cityService.addCity(city);
+        return new ResponseEntity<CityDto>(new CityDto(city), HttpStatus.OK);
     }
 
     @PutMapping(path="/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<City> updateCity(@PathVariable("id")final int id, @Valid @RequestBody final City city) {
+    public ResponseEntity<CityDto> updateCity(@PathVariable("id")final int id, @Valid @RequestBody final City city) {
         if (cityService.getCityId(id) == null) {
-            LOGGER.info("Can't update Item without id - null value was passed instead of it");
+            LOGGER.info("Can't update city without id - null value was passed instead of it");
             throw new ConferenceNotFoundException("City with id: " + id + " not found");
         }
-        LOGGER.info("Updated an item with id: " + id);
+        LOGGER.info("Updated an city with id: " + id);
         city.setId(id);
-        return new ResponseEntity<City>(cityService.updateCity(city), HttpStatus.OK);
+        cityService.updateCity(city);
+        return new ResponseEntity<CityDto>(new CityDto(city), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")

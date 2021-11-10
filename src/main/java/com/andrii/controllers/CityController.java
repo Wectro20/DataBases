@@ -50,10 +50,9 @@ public class CityController {
     }
 
     @PostMapping
-    public ResponseEntity<CityDto> createCity(@Valid @RequestBody City city) {
+    public ResponseEntity<City> createCity(@Valid @RequestBody City city) {
         LOGGER.info("Success added city");
-        cityService.addCity(city);
-        return new ResponseEntity<CityDto>(new CityDto(city), HttpStatus.OK);
+        return new ResponseEntity<City>(cityService.addCity(city), HttpStatus.OK);
     }
 
     @PutMapping(path="/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)

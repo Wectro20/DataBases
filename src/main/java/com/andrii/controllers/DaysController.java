@@ -1,5 +1,6 @@
 package com.andrii.controllers;
 
+import com.andrii.dto.DaysDto;
 import com.andrii.exceptions.ConferenceNotFoundException;
 import com.andrii.models.Days;
 import com.andrii.service.DaysService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,36 +25,45 @@ public class DaysController {
     private DaysService daysService;
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Days> getDays(@PathVariable(name = "id") Integer id) {
+    public ResponseEntity<DaysDto> getDays(@PathVariable(name = "id") Integer id) {
         if (daysService.getDayId(id) == null) {
             LOGGER.info("Can't update day with non-existing id" + id);
             throw new ConferenceNotFoundException("Day with id: " + id + " not found");
         }
         LOGGER.info("Successfully gave an object:" + id);
-        return new ResponseEntity<Days>(daysService.getDayId(id), HttpStatus.OK);
+        Days days = daysService.getDayId(id);
+        return new ResponseEntity<DaysDto>(new DaysDto(days), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<Days>> getDays() {
+    public ResponseEntity<List<DaysDto>> getDays() {
         LOGGER.info("Successfully gave an objects");
-        return new ResponseEntity<List<Days>>(daysService.getDay(), HttpStatus.OK);
+        List<Days> days1 = daysService.getDay();
+        List<DaysDto> daysDtos = new ArrayList<>();
+        for (Days days2: days1) {
+            DaysDto daysDto = new DaysDto(days2);
+            daysDtos.add(daysDto);
+        }
+        return new ResponseEntity<List<DaysDto>>(daysDtos, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Days> createDays(@Valid @RequestBody Days day) {
+    public ResponseEntity<DaysDto> createDays(@Valid @RequestBody Days day) {
         LOGGER.info("Success added day");
-        return new ResponseEntity<Days>(daysService.addDay(day), HttpStatus.OK);
+        daysService.addDay(day);
+        return new ResponseEntity<DaysDto>(new DaysDto(day), HttpStatus.OK);
     }
 
     @PutMapping(path="/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Days> updateDays(@PathVariable("id")final int id, @Valid @RequestBody final Days day) {
+    public ResponseEntity<DaysDto> updateDays(@PathVariable("id")final int id, @Valid @RequestBody final Days day) {
         if (daysService.getDayId(id) == null) {
             LOGGER.info("Can't update Day without id - null value was passed instead of it");
             throw new ConferenceNotFoundException("Day with id: " + id + " not found");
         }
         LOGGER.info("Updated an day with id: " + id);
         day.setId(id);
-        return new ResponseEntity<Days>(daysService.updateDay(day), HttpStatus.OK);
+        daysService.updateDay(day);
+        return new ResponseEntity<DaysDto>(new DaysDto(day), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")

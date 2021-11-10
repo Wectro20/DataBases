@@ -21,10 +21,10 @@ public class Country{
     @Basic
     @NotNull(message = "Missing name")
     @Column(name = "name")
-    private String name;
+    private String countryName;
 
     public Country(String name) {
-        this.name = name;
+        this.countryName = countryName;
     }
 
     @Override
@@ -32,16 +32,16 @@ public class Country{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Country country = (Country) o;
-        return Objects.equals(id, country.id) && Objects.equals(name, country.name);
+        return Objects.equals(id, country.id) && Objects.equals(countryName, country.countryName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, countryName);
     }
 
     @Override
     public String toString() {
-        return String.format("| %-3s| %-20s|",id, name);
+        return String.format("| %-3s| %-20s|",id, countryName);
     }
 }

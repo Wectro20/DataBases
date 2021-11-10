@@ -1,6 +1,8 @@
 package com.andrii.controllers;
 
+import com.andrii.dto.WeatherStatusDto;
 import com.andrii.exceptions.ConferenceNotFoundException;
+import com.andrii.models.Forecast;
 import com.andrii.models.WeatherStatus;
 import com.andrii.service.WeatherStatusService;
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,40 +26,49 @@ public class WeatherStatusController {
     private WeatherStatusService weatherStatusService;
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<WeatherStatus> getWeatherStatus(@PathVariable(name = "id") Integer id) {
+    public ResponseEntity<WeatherStatusDto> getWeatherStatus(@PathVariable(name = "id") Integer id) {
         if (weatherStatusService.getWeatherStatusId(id) == null) {
             LOGGER.info("Can't update weatherStatus with non-existing id" + id);
             throw new ConferenceNotFoundException("WeatherStatus with id: " + id + " not found");
         }
         LOGGER.info("Successfully gave an object:" + id);
-        return new ResponseEntity<WeatherStatus>(weatherStatusService.getWeatherStatusId(id), HttpStatus.OK);
+        WeatherStatus weatherStatus = weatherStatusService.getWeatherStatusId(id);
+        return new ResponseEntity<WeatherStatusDto>(new WeatherStatusDto(weatherStatus), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<WeatherStatus>> getWeatherStatus() {
+    public ResponseEntity<List<WeatherStatusDto>> getWeatherStatus() {
         LOGGER.info("Successfully gave an objects");
-        return new ResponseEntity<List<WeatherStatus>>(weatherStatusService.getWeatherStatus(), HttpStatus.OK);
+        List<WeatherStatus> weatherStatuses = weatherStatusService.getWeatherStatus();
+        List<WeatherStatusDto> weatherStatusDtos = new ArrayList<>();
+        for (WeatherStatus weatherStatus : weatherStatuses) {
+            WeatherStatusDto weatherStatusDto = new WeatherStatusDto(weatherStatus);
+            weatherStatusDtos.add(weatherStatusDto);
+        }
+        return new ResponseEntity<List<WeatherStatusDto>>(weatherStatusDtos, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<WeatherStatus> createWeatherStatus(@Valid @RequestBody WeatherStatus weatherStatus) {
+    public ResponseEntity<WeatherStatusDto> createWeatherStatus(@Valid @RequestBody WeatherStatus weatherStatus) {
         LOGGER.info("Success added weatherStatus");
-        return new ResponseEntity<WeatherStatus>(weatherStatusService.addWeatherStatus(weatherStatus), HttpStatus.OK);
+        weatherStatusService.addWeatherStatus(weatherStatus);
+        return new ResponseEntity<WeatherStatusDto>(new WeatherStatusDto(weatherStatus), HttpStatus.OK);
     }
 
     @PutMapping(path="/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WeatherStatus> updateWeatherStatus(@PathVariable("id")final int id, @Valid @RequestBody final WeatherStatus weatherStatus) {
+    public ResponseEntity<WeatherStatusDto> updateWeatherStatus(@PathVariable("id")final int id, @Valid @RequestBody final WeatherStatus weatherStatus) {
         if (weatherStatusService.getWeatherStatusId(id) == null) {
             LOGGER.info("Can't update weatherStatus without id - null value was passed instead of it");
             throw new ConferenceNotFoundException("WeatherStatus with id: " + id + " not found");
         }
         LOGGER.info("Updated an item with id: " + id);
         weatherStatus.setId(id);
-        return new ResponseEntity<WeatherStatus>(weatherStatusService.updateWeatherStatus(weatherStatus), HttpStatus.OK);
+        weatherStatusService.updateWeatherStatus(weatherStatus);
+        return new ResponseEntity<WeatherStatusDto>(new WeatherStatusDto(weatherStatus), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<WeatherStatus> deleteCity(@PathVariable("id") Integer id) {
+    public ResponseEntity<WeatherStatus> deleteWeatherStatus(@PathVariable("id") Integer id) {
         if (weatherStatusService.getWeatherStatusId(id) == null) {
             LOGGER.info("Can't delete weatherStatus ");
             throw new ConferenceNotFoundException("WeatherStatus with id: " + id + " not found");

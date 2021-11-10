@@ -20,10 +20,10 @@ public class City {
     @Basic
     @NotNull(message = "Missing name")
     @Column(name = "name")
-    private String name;
+    private String cityName;
 
-    public City(String name) {
-        this.name = name;
+    public City(String cityName) {
+        this.cityName = cityName;
     }
 
     @Override
@@ -31,17 +31,17 @@ public class City {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         City city = (City) o;
-        return Objects.equals(id, city.id) && Objects.equals(name, city.name);
+        return Objects.equals(id, city.id) && Objects.equals(cityName, city.cityName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, cityName);
     }
 
     @Override
     public String toString() {
-        return String.format("| %-3s| %-20s|",id, name);
+        return String.format("| %-3s| %-20s|",id, cityName);
     }
 
 }

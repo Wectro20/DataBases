@@ -22,10 +22,10 @@ public class Days{
     @Basic
     @NotNull(message = "Missing name")
     @Column(name = "name")
-    private String name;
+    private String dayName;
 
     public Days(String name) {
-        this.name = name;
+        this.dayName = name;
     }
 
     @Override
@@ -33,17 +33,17 @@ public class Days{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Days days = (Days) o;
-        return Objects.equals(id, days.id) && Objects.equals(name, days.name);
+        return Objects.equals(id, days.id) && Objects.equals(dayName, days.dayName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, dayName);
     }
 
     @Override
     public String toString() {
-        return String.format("| %-3s| %-20s|",id, name);
+        return String.format("| %-3s| %-20s|",id, dayName);
     }
 
 

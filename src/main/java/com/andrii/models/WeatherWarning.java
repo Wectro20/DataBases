@@ -21,7 +21,7 @@ public class WeatherWarning{
     @Basic
     @NotNull(message = "Missing name")
     @Column(name = "name")
-    private String name;
+    private String weatherWarningName;
 
 
 
@@ -30,16 +30,16 @@ public class WeatherWarning{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         WeatherWarning that = (WeatherWarning) o;
-        return Objects.equals(id, that.id) && Objects.equals(name, that.name);
+        return Objects.equals(id, that.id) && Objects.equals(weatherWarningName, that.weatherWarningName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name);
+        return Objects.hash(id, weatherWarningName);
     }
 
     @Override
     public String toString() {
-        return String.format("| %-3s| %-29s|",id, name);
+        return String.format("| %-3s| %-29s|",id, weatherWarningName);
     }
 }

@@ -1,5 +1,6 @@
 package com.andrii.controllers;
 
+import com.andrii.dto.WeatherWeeklyForecastDto;
 import com.andrii.exceptions.ConferenceNotFoundException;
 import com.andrii.models.WeatherWeeklyForecast;
 import com.andrii.service.WeatherWeeklyForecastService;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,36 +25,45 @@ public class WeatherWeeklyForecastController {
     private WeatherWeeklyForecastService weatherWeeklyForecastService;
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<WeatherWeeklyForecast> getWeatherWeeklyForecast(@PathVariable(name = "id") Integer id) {
+    public ResponseEntity<WeatherWeeklyForecastDto> getWeatherWeeklyForecast(@PathVariable(name = "id") Integer id) {
         if (weatherWeeklyForecastService.getWeatherWeeklyForecast(id) == null) {
             LOGGER.info("Can't update WeatherWeeklyForecast with non-existing id" + id);
             throw new ConferenceNotFoundException("WeatherWeeklyForecast with id: " + id + " not found");
         }
         LOGGER.info("Successfully gave an object:" + id);
-        return new ResponseEntity<WeatherWeeklyForecast>(weatherWeeklyForecastService.getWeatherWeeklyForecast(id), HttpStatus.OK);
+        WeatherWeeklyForecast weatherWeeklyForecast = weatherWeeklyForecastService.getWeatherWeeklyForecast(id);
+        return new ResponseEntity<WeatherWeeklyForecastDto>(new WeatherWeeklyForecastDto(weatherWeeklyForecast), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<WeatherWeeklyForecast>> getWeatherWeeklyForecast() {
+    public ResponseEntity<List<WeatherWeeklyForecastDto>> getWeatherWeeklyForecast() {
         LOGGER.info("Successfully gave an objects");
-        return new ResponseEntity<List<WeatherWeeklyForecast>>(weatherWeeklyForecastService.getWeatherWeeklyForecast(), HttpStatus.OK);
+        List<WeatherWeeklyForecast> weatherWeeklyForecasts = weatherWeeklyForecastService.getWeatherWeeklyForecast();
+        List<WeatherWeeklyForecastDto> weatherWeeklyForecastDtos = new ArrayList<>();
+        for (WeatherWeeklyForecast weatherWeeklyForecast : weatherWeeklyForecasts) {
+            WeatherWeeklyForecastDto weatherWeeklyForecastDto = new WeatherWeeklyForecastDto(weatherWeeklyForecast);
+            weatherWeeklyForecastDtos.add(weatherWeeklyForecastDto);
+        }
+        return new ResponseEntity<List<WeatherWeeklyForecastDto>>(weatherWeeklyForecastDtos, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<WeatherWeeklyForecast> createWeatherWeeklyForecast(@Valid @RequestBody WeatherWeeklyForecast weatherWeeklyForecast) {
+    public ResponseEntity<WeatherWeeklyForecastDto> createWeatherWeeklyForecast(@Valid @RequestBody WeatherWeeklyForecast weatherWeeklyForecast) {
         LOGGER.info("Success added city");
-        return new ResponseEntity<WeatherWeeklyForecast>(weatherWeeklyForecastService.addWeatherWeeklyForecast(weatherWeeklyForecast), HttpStatus.OK);
+        weatherWeeklyForecastService.addWeatherWeeklyForecast(weatherWeeklyForecast);
+        return new ResponseEntity<WeatherWeeklyForecastDto>(new WeatherWeeklyForecastDto(weatherWeeklyForecast), HttpStatus.OK);
     }
 
     @PutMapping(path="/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<WeatherWeeklyForecast> updateWeatherWeeklyForecast(@PathVariable("id")final int id, @Valid @RequestBody final WeatherWeeklyForecast weatherWeeklyForecast) {
+    public ResponseEntity<WeatherWeeklyForecastDto> updateWeatherWeeklyForecast(@PathVariable("id")final int id, @Valid @RequestBody final WeatherWeeklyForecast weatherWeeklyForecast) {
         if (weatherWeeklyForecastService.getWeatherWeeklyForecast(id) == null) {
             LOGGER.info("Can't update WeatherWeeklyForecast without id - null value was passed instead of it");
             throw new ConferenceNotFoundException("WeatherWeeklyForecast with id: " + id + " not found");
         }
         LOGGER.info("Updated an city with id: " + id);
         weatherWeeklyForecast.setId(id);
-        return new ResponseEntity<WeatherWeeklyForecast>(weatherWeeklyForecastService.updateWeatherWeeklyForecast(weatherWeeklyForecast), HttpStatus.OK);
+        weatherWeeklyForecastService.updateWeatherWeeklyForecast(weatherWeeklyForecast);
+        return new ResponseEntity<WeatherWeeklyForecastDto>(new WeatherWeeklyForecastDto(weatherWeeklyForecast), HttpStatus.OK);
     }
 
     @DeleteMapping(path = "/{id}")

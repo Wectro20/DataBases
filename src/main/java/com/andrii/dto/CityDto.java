@@ -14,6 +14,6 @@ public class CityDto {
     }
 
     public String getCityName() {
-        return city.getName();
+        return city.getCityName();
     }
 }
